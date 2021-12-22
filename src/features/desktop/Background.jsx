@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import bg from '../assets/bg.gif';
+import bg from '../../assets/bg.gif';
 
 const Div = styled.div`
 	position: fixed;

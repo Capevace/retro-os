@@ -9,13 +9,13 @@ import {
 	Divider,
 	TextField,
 } from 'react95';
-import logoIMG from '../logo.svg';
+import logoIMG from '../../assets/logo.svg';
 
 function SystemBar() {
 	const [open, setOpen] = useState(false);
 
 	return (
-		<AppBar style={{ top: 'initial', bottom: 0 }}>
+		<AppBar style={{ top:  0 }}>
 			<Toolbar style={{ justifyContent: 'space-between' }}>
 				<div style={{ position: 'relative', display: 'inline-block' }}>
 					<Button
@@ -35,7 +35,7 @@ function SystemBar() {
 							style={{
 								position: 'absolute',
 								left: '0',
-								top: '-400%',
+								top: '100%',
 							}}
 							onClick={() => setOpen(false)}
 						>

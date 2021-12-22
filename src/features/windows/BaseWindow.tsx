@@ -1,5 +1,5 @@
 import { ReactNode, useRef, FunctionComponent } from 'react';
-import Draggable from 'react-draggable';
+import Draggable, { DraggableEvent } from 'react-draggable';
 import {
 	Window,
 	WindowContent,
@@ -10,7 +10,11 @@ import {
 	TextField,
 } from 'react95';
 import styled, { css } from 'styled-components';
-import { WindowPosition } from './windowManagerSlice';
+import {
+	DEFAULT_WINDOW_SIZE,
+	WindowPosition,
+	WindowSize,
+} from './windowManagerSlice';
 
 const WindowHeaderTitle = styled.span`
 	pointer-events: none;
@@ -20,9 +24,9 @@ const WindowHeaderTitle = styled.span`
 interface BaseWindowProps {
 	id: String;
 	title: String;
-	x: number;
-	y: number;
-	width?: string;
+	position: WindowPosition;
+	size?: Partial<WindowSize>;
+	active?: boolean;
 	onDrag?: (position: WindowPosition) => void;
 	onFocus?: () => void;
 	onClose?: () => void;
@@ -35,9 +39,11 @@ const BaseWindow: FunctionComponent<BaseWindowProps> = ({
 	className = '',
 	id,
 	title = 'Unnamed Window',
-	x,
-	y,
-	width = '400px',
+	position,
+	size: { width, height } = {
+		width: DEFAULT_WINDOW_SIZE.width,
+	},
+	active = false,
 	onDrag = (position) => {},
 	onFocus = () => {},
 	onClose = () => {},
@@ -46,7 +52,7 @@ const BaseWindow: FunctionComponent<BaseWindowProps> = ({
 }) => {
 	const windowRef = useRef(null);
 
-	const handleDrag = (e, data: WindowPosition) => {
+	const handleDrag = (e: DraggableEvent, data: WindowPosition) => {
 		onDrag({ x: data.x, y: data.y });
 	};
 
@@ -55,12 +61,22 @@ const BaseWindow: FunctionComponent<BaseWindowProps> = ({
 			handle=".window-header"
 			bounds="html"
 			nodeRef={windowRef}
-			position={{ x, y }}
+			position={position}
 			onStop={handleDrag}
+			onMouseDown={onFocus}
 		>
-			<Window className={`window ${className}`} ref={windowRef}>
-				<WindowHeader className="window-header">
-					<WindowHeaderTitle>{title}</WindowHeaderTitle>
+			<Window
+				className={`window ${className}`}
+				ref={windowRef}
+				style={{
+					width: width ? `${width}px` : undefined,
+					height: height ? `${height}px` : undefined,
+				}}
+			>
+				<WindowHeader active={active} className="window-header">
+					<WindowHeaderTitle>
+						{title} {width}
+					</WindowHeaderTitle>
 					<Button className="close-button" onClick={onClose}>
 						<span className="close-icon">x</span>
 					</Button>

@@ -23,19 +23,22 @@ const WindowManager: FunctionComponent = () => {
 
 	return (
 		<StyledManager>
-			{windows.map((window) => (
+			{windows.map((window, index) => (
 				<BaseWindow
 					key={window.id}
 					id={window.id}
 					title={window.title}
-					x={window.position.x}
-					y={window.position.y}
+					position={window.position}
+					size={window.size}
+					active={index === windows.length - 1}
 					onFocus={() => dispatch(focusWindow(window.id))}
 					onDrag={(position) =>
 						dispatch(dragWindow({ id: window.id, position }))
 					}
 					onClose={() => dispatch(closeWindow(window.id))}
-				/>
+				>
+					{window.component || null}
+				</BaseWindow>
 			))}
 		</StyledManager>
 	);

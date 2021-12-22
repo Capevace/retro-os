@@ -1,7 +1,7 @@
 import styled from 'styled-components';
-import Background from '../../components/Background';
+import Background from './Background';
 import DesktopIcons from './DesktopIcons';
-import SystemBar from '../../components/SystemBar';
+import SystemBar from './SystemBar';
 import WindowManager from '../windows/WindowManager';
 
 const Wrapper = styled.div`
